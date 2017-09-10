@@ -1,0 +1,99 @@
+
+<style>
+
+    #chararea{
+            height: 60%;
+    width: 60%;
+    background: aliceblue;
+    }
+    #chatpage{
+
+    }
+    #chatlist{
+        overflow-y: hidden;
+    }
+    #detailArea{
+    height: 70%;
+    width: 35%;
+    float: right;
+    margin-top: -33%;
+    }
+            #loginpage{
+            border: 1px solid skyblue;
+    height: 62%;
+    width: 40%;
+    margin-left: 28%;
+    margin-top: 7%;
+    background-color: aliceblue;
+    }
+    #loginContainer{
+       margin-top: 30%;
+    margin-left: 5%;
+    width: 90%;
+    }
+    #login{
+        margin-left: 31%;
+    }
+
+  #onUsers>ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+    width: 50%;
+    height:100%;
+}
+
+    #onUsers>ul>li::before {
+    content: "• ";
+    color: #1ee81e;
+    font-size: x-large;
+    vertical-align: middle;
+}
+</style>
+
+<div  id='loginpage'>
+<div id="loginContainer">
+<input id="nickname" class="form-control input-lg"  type="text" placeholder="enter nick name to enter chat room"/>
+<br>
+<label id="error" style="color :red"></label>
+<br>
+<input type="button"  class="btn btn-primary btn-group-lg" id='login' value="Enter chat room"/>
+</div>
+
+</div>
+
+<div id='chatpage'>
+    <div id="chararea">
+        <div>
+            <ul style="height: 95%;list-style:none;margin-left:-30px" id="chatlist">
+
+            </ul>
+        </div>
+        <div>
+            <textarea style="width: 89%;" type="text" id="msg" placeholder="enter your message here"></textarea>
+            <input style="margin-top: -4%;"  class="btn btn-primary btn-group-lg"  type="button" value="send" id="send"/>
+            <label id='chatError' style="color:red; font-weight:400"></label>
+        </div>
+    </div>
+
+<div id="detailArea">
+     <div>
+         <span><b><i>Instruction:</i></b></b></span>
+         <br>
+         <br>
+         <p>
+             To send private message used <span style="color:red;font-weight: 600;"> @nickname</span>.<br>
+             nickname is case sensitive.
+         </p>
+        
+    </div>
+    <div id="onUsers">
+        <h3>Online users(<lable id="userCount"></lable>)</h2>
+        <ul id="users" style=""></ul>
+    </div>
+
+</div>
+
+
+</div>

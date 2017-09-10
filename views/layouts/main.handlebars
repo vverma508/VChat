@@ -1,0 +1,112 @@
+<html !DOCTYPE>
+
+<head>
+    <title>
+        VChat
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <script src="/socket.io/socket.io.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+    $(function($){
+        var user;
+  $('#chatpage').hide();
+        var socket =io();
+
+        $('#login').click(function(e){
+            e.preventDefault();
+            socket.emit('new-user',$('#nickname').val(), function(data){
+                if(data){
+                    user=$('#nickname').val();
+                    document.title=user;
+                    $('#loginpage').hide();
+                    $('#chatpage').show();
+                }
+                else{
+                $('#error').text('nick name not availabe!')
+                }
+            })
+        })
+
+        socket.on('usernames', function(data){
+            $('#users').html('')
+            $('#userCount').text(data.length)
+            for(var i=0;i<data.length;i++)
+            {
+                $('#users').append("<li style='margin-bottom: -18px;'>"+data[i]+'</li>')
+            }
+        });
+
+          socket.on('new-msg', function(data){
+            var messgaeArr= data.split(':');
+            if(messgaeArr[0]==user){
+                $('#chatlist').append("<li style='text-align: right;font-weight:600;    background-color: #e8ceef;'>"+data+'</li><br>')
+            }
+            else{
+
+            $('#chatlist').append("<li style='background-color: #d1e2e2;'>"+data+'</li><br>')
+            }
+
+              $('#msg').val('');
+              $('#chatlist').scrollTop(200000000);
+
+        })
+          socket.on('private-s-msg', function(data){
+            var messgaeArr= data.split(':');
+            if(messgaeArr[0]==user){
+            $('#chatlist').append("<li style='color:red;text-align: right;font-weight:600;    background-color: #e8ceef;'>"+data+"</li><br>")
+            }
+            else{
+            $('#chatlist').append("<li style='color:red;background-color: #d1e2e2;'>"+data+"</li><br>")
+            }
+              $('#msg').val('');
+            $('#chatlist').scrollTop(200000000);
+ 
+        })
+         socket.on('private-s-msg-error', function(data){
+              $('#chatError').text(data);
+         })
+
+        $('#send').click(function(){
+            var text = $('#msg').val();
+            var textArray= text.split(' ');
+            var firstWord =textArray[0];
+            if(firstWord[0]=='@'){
+                var toPerson =firstWord.substring(1);
+                if(toPerson==user)
+                {
+                    $('#chatError').text("You can't send private message to yourself")
+                }
+                else{
+                var message =text.substring(firstWord.length)
+                socket.emit('private-c-message',toPerson,message)
+                }
+            }
+            else{
+            socket.emit('client-message',$('#msg').val());
+                      
+            }
+           $('#chatlist').scrollTop(200000000);
+        })
+
+    })
+</script>
+</head>
+
+<body class="container" style="height:100%;">
+        <div style=" border-radius:10px;background-color:gainsboro" class="page-header">
+        <div style="    height: 6%;
+    font-size: xx-large;
+    font-style: oblique;
+    font-weight: 800;">
+            <span>VChat</span></div>
+        </div>
+   {{{body}}}
+</body>
+
+</html>
