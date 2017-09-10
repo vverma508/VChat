@@ -22,10 +22,10 @@ var httpServer = http.createServer(app);
 var ioserver = io(httpServer);
 var users = [];
 
-ioserver.on('connection', function(socket) { // step 3: Handle  standard event 'connection' on io object and receive a client socket
+ioserver.on('connection', function(socket) { 
     console.log('a user connected');
 
-    socket.on('disconnect', function() { //step 4: write a handler for the 'disconnect' event on the client socket
+    socket.on('disconnect', function() {
         delete users[socket.nickname];
         ioserver.emit('usernames', Object.keys(users));
     });
@@ -42,8 +42,7 @@ ioserver.on('connection', function(socket) { // step 3: Handle  standard event '
         }
     })
 
-    socket.on('new-user', function(data, callback) { // step 5: write handler for various user events 
-
+    socket.on('new-user', function(data, callback) { 
         console.log('new user request received')
         if (data in users) {
             callback(false);
@@ -53,7 +52,7 @@ ioserver.on('connection', function(socket) { // step 3: Handle  standard event '
             socket.nickname = data;
             users[socket.nickname] = socket;
             ioserver.emit('usernames', Object.keys(users));
-        } // step 6: use io.emit method on io to broadcast ao all connected users
+        } 
     });
 });
 
