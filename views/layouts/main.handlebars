@@ -15,6 +15,7 @@
 <script>
     $(function($){
         var user;
+        var tempMsg;
   $('#chatpage').hide();
         var socket =io();
 
@@ -52,7 +53,7 @@
             $('#chatlist').append("<li style='background-color: #d1e2e2;'>"+data+'</li><br>')
             }
 
-              $('#msg').val('');
+              
               $('#chatlist').scrollTop(200000000);
 
         })
@@ -64,12 +65,13 @@
             else{
             $('#chatlist').append("<li style='color:red;background-color: #d1e2e2;'>"+data+"</li><br>")
             }
-              $('#msg').val('');
+             
             $('#chatlist').scrollTop(200000000);
  
         })
          socket.on('private-s-msg-error', function(data){
               $('#chatError').text(data);
+               $('#msg').val(tempMsg);
          })
 
         $('#send').click(function(){
@@ -91,6 +93,8 @@
             socket.emit('client-message',$('#msg').val());
                       
             }
+            tempMsg =$('#msg').val();
+            $('#msg').val('');
            $('#chatlist').scrollTop(200000000);
         })
 
